@@ -331,7 +331,7 @@ class ShotlistExport(sgtk.platform.Application):
             self.log_info(">>> tk-shotlist-export INIT SUCCESS <<<")
 
         props = {
-            "title": "Export Shotlist",
+            "title": "Generate Excel Shotlist",
             "supports_multiple_selection": True,
         }
 
