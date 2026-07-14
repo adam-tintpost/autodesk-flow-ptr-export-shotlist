@@ -1,0 +1,13 @@
+display_name: Shotlist Export
+description: Export selected shots to Excel Shotlist file
+
+configuration: {}
+
+supported_engines:
+  - tk-shotgun
+
+frameworks: []
+
+requires_shotgun_version: "8.0.0"
+
+python_package: "python"
