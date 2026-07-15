@@ -1,73 +1,144 @@
 
-
-    # FLOW SHOTLIST EXPORT CUSTOM TOOLKIT BUTTON BY ADAM ARBINGE 2026/07/13
-    # VERSION 1.0.0 
-
-
-    # ::::: CONFIGURATION GUIDE :::::
-
-    #     Flow Production Tracking Toolkit – Shotlist Export Integration
-    # FLIES MODIFIED
-    #   ::: config/env/includes/app_locations.yml :::
-    #   Example:
-    #       apps.tk-shotlist-export:
-    #       type: dev
-    #       path: ../../dev/tk-shotlist-export
-    #   - Registers where Toolkit can find the application.
-
-    #   ::: config/env/project.yml :::
-    #   Example:
-    #       settings.tk-shotlist-export:
-    #       location: "@apps.tk-shotlist-export"
-    #   - Creates an application instance.
-
-    #   ::: config/env/project.yml (engine section) :::
-    #   Example:
-    #       engines:
-    #           tk-shotgun:
-    #               apps:
-
-    #                   tk-shotlist-export: "@settings.tk-shotlist-export"
-    #   - Loads the application into the desired engine.
-
-    #   ::: /Volumes/Assets-STHLM_1/VFX/adam_flow_root/config/env/includes/settings/tk-shotgun.yml :::
-    #   You need to add the custom app at the top "includes:"
-    #   You also need to add the app at the corresponding step, shot/sequence/shot_step etc
-
-    # NEW FILES CREATED
-    # config/
-    # └── dev/
-    #     └── tk-shotlist-export/
-    #         ├── app.py
-    #         ├── info.yml
-    #         ├── python/
-    #         └── resources/
-    #             └── SHOTLIST_TEMPLATE.xlsx
-
-    # app.py      - Main application logic. Registers commands and contains all export code.
-    # info.yml    - Toolkit metadata (display name, version, engine compatibility, etc.).
-    # resources/  - Icons, Excel templates, or any bundled assets.
-    # python/     - Optional helper modules if the project grows larger.
-
-    # Also this: /Volumes/Assets-STHLM_1/VFX/adam_flow_root/config/env/includes/settings/tk-shotlist-export.yml
-
-
-
-    # REGISTER TOOLKIT COMMAND
-    #   - Inside app.py, register one or more commands during initialization.
-    #   Example:
-    #       def init_app(self):
-    
-    #       self.engine.register_command(
-    #           "shotlist_export",
-    #           self.export_shotlist,
-    #           {
-    #               "title": "Export Shotlist",
-    #               "supports_multiple_selection": True,
-    #           }
-    #       )
-    
-    #   This creates the menu item that appears inside Flow Production Tracking.
+# ============================================================================
+# CUSTOM TOOLKIT APP IMPLEMENTATION GUIDE
+# ============================================================================
+#
+# This guide describes how to integrate ANY custom Toolkit app into
+# Autodesk Flow Production Tracking.
+#
+# ---------------------------------------------------------------------------
+# 1. CREATE THE CUSTOM APP
+# ---------------------------------------------------------------------------
+#
+# Create a Toolkit app with the following structure:
+#
+# tk-your-app/
+# ├── app.py
+# ├── info.yml
+# ├── python/
+# │   └── __init__.py
+# └── resources/
+#     └── (icons, templates, etc.)
+#
+# app.py
+#     Main application code.
+#
+# info.yml
+#     Toolkit metadata (display name, supported engines, etc.)
+#
+# python/
+#     Optional helper modules.
+#
+# resources/
+#     Templates, icons and other bundled assets.
+#
+#
+# ---------------------------------------------------------------------------
+# 2. REGISTER THE APP LOCATION
+# ---------------------------------------------------------------------------
+#
+# File:
+#     config/env/includes/app_locations.yml
+#
+# Add a descriptor pointing to the application.
+#
+# Example (Git):
+#
+# apps.tk-your-app.location:
+#   type: git
+#   path: git@github.com:<username>/<repository>.git
+#   version: v1.0.0
+#
+# Example (Path):
+#
+# apps.tk-your-app.location:
+#   type: path
+#   path: /path/to/tk-your-app
+#
+#
+# ---------------------------------------------------------------------------
+# 3. CREATE AN APP SETTINGS FILE
+# ---------------------------------------------------------------------------
+#
+# Create:
+#
+# config/env/includes/settings/tk-your-app.yml
+#
+# Contents:
+#
+# includes:
+# - ../app_locations.yml
+#
+# settings.tk-your-app:
+#   location: "@apps.tk-your-app.location"
+#
+#
+# ---------------------------------------------------------------------------
+# 4. INCLUDE THE SETTINGS FILE
+# ---------------------------------------------------------------------------
+#
+# File:
+#
+# config/env/includes/settings/tk-shotgun.yml
+#
+# Add the settings include:
+#
+# includes:
+#   ...
+#   - ./tk-your-app.yml
+#
+#
+# ---------------------------------------------------------------------------
+# 5. LOAD THE APP INTO THE DESIRED CONTEXT
+# ---------------------------------------------------------------------------
+#
+# File:
+#
+# config/env/includes/settings/tk-shotgun.yml
+#
+# Add the app to whichever context(s) should display it:
+#
+# settings.tk-shotgun.project:
+# settings.tk-shotgun.sequence:
+# settings.tk-shotgun.shot:
+# settings.tk-shotgun.asset:
+# settings.tk-shotgun.task:
+# etc.
+#
+# Example:
+#
+# settings.tk-shotgun.shot:
+#   apps:
+#     tk-your-app: "@settings.tk-your-app"
+#
+#
+# ---------------------------------------------------------------------------
+# 6. REGISTER THE TOOLKIT COMMAND
+# ---------------------------------------------------------------------------
+#
+# Inside app.py:
+#
+# def init_app(self):
+#
+#     self.engine.register_command(
+#         "your_command",
+#         self.your_function,
+#         {
+#             "title": "Menu Name",
+#             "supports_multiple_selection": True,
+#         }
+#     )
+#
+# This creates the menu item inside Flow Production Tracking.
+#
+#
+# ---------------------------------------------------------------------------
+# 7. RESTART TOOLKIT
+# ---------------------------------------------------------------------------
+#
+# Restart the Flow Desktop application or reload Toolkit after making changes.
+#
+# ============================================================================
 
 
 import os
