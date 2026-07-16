@@ -145,6 +145,7 @@ import os
 import tempfile
 import sgtk
 import time
+import json
 
 from datetime import datetime
 from copy import copy
@@ -164,7 +165,7 @@ class ShotlistExport(sgtk.platform.Application):
 
 
     # debug toggle
-    DEBUG_MODE = False
+    DEBUG_MODE = True
     # to check if thumbnails are slowing down execution
     THUMBNAILS_DISABLED = False
 
@@ -192,214 +193,10 @@ class ShotlistExport(sgtk.platform.Application):
     BASE_DIR = None
     THUMBNAIL_DIR = None
     TEMPLATE_FILE = None
+    RESOURCE_DIR = None
 
 
-    STATUS_INFO = {
-
-        "act": {
-            "name": "Active",
-            "color": "19761B"
-        },
-
-        "apr": {
-            "name": "Approved",
-            "color": "B3B3B3"
-        },
-
-        "acr": {
-            "name": "Awaiting Client Review",
-            "color": "005C83"
-        },
-
-        "ca": {
-            "name": "Client approved",
-            "color": "A1EC9A"
-        },
-
-        "cap": {
-            "name": "Client Approved",
-            "color": "19761B"
-        },
-
-        "clsd": {
-            "name": "Closed",
-            "color": "969696"
-        },
-
-        "cmpt": {
-            "name": "Complete",
-            "color": "929292"
-        },
-
-        "cfrm": {
-            "name": "Confirmed",
-            "color": "A1EC9A"
-        },
-
-        "dlvr": {
-            "name": "Delivered",
-            "color": "D5D5D5"
-        },
-
-        "dis": {
-            "name": "Disabled",
-            "color": "CC0001"
-        },
-
-        "fdbk": {
-            "name": "Feedback to adress",
-            "color": "B700BC"
-        },
-
-        "fta": {
-            "name": "Feedback to adress",
-            "color": "DEB6FF"
-        },
-
-        "fin": {
-            "name": "Final",
-            "color": "969696"
-        },
-
-        "ing": {
-            "name": "In grade",
-            "color": "006EFC"
-        },
-
-        "ion": {
-            "name": "In_Online",
-            "color": "0295D8"
-        },
-
-        "ip": {
-            "name": "In Progress",
-            "color": "CAE1CA"
-        },
-
-        "inp": {
-            "name": "In progress",
-            "color": "FFFFFF"
-        },
-
-        "ia": {
-            "name": "Internally approved",
-            "color": "98F2FB"
-        },
-
-        "iap": {
-            "name": "Internally approved",
-            "color": "CAEDC5"
-        },
-
-        "na": {
-            "name": "N/A",
-            "color": "FFFFFF"
-        },
-
-        "omt": {
-            "name": "Omit",
-            "color": "E17F81"
-        },
-
-        "omit": {
-            "name": "Omit",
-            "color": "FE9798"
-        },
-
-        "hld": {
-            "name": "On Hold",
-            "color": "969696"
-        },
-
-        "onhold": {
-            "name": "On hold",
-            "color": "FECD8A"
-        },
-
-        "opn": {
-            "name": "Open",
-            "color": "D5D5D5"
-        },
-
-        "pndng": {
-            "name": "Pending",
-            "color": "969696"
-        },
-
-        "rev": {
-            "name": "Pending Review",
-            "color": "95E3A7"
-        },
-
-        "pr": {
-            "name": "Pending Review",
-            "color": "EFFBCB"
-        },
-
-        "prw": {
-            "name": "Pending review",
-            "color": "004A00"
-        },
-
-        "pnrw": {
-            "name": "Pending Review",
-            "color": "BCDAFC"
-        },
-
-        "qc": {
-            "name": "QC Ready For Delivery",
-            "color": "016E01"
-        },
-
-        "rts": {
-            "name": "Ready to start",
-            "color": "FBFDCC"
-        },
-
-        "recd": {
-            "name": "Received",
-            "color": "FFFFFF"
-        },
-
-        "res": {
-            "name": "Resolved",
-            "color": "969696"
-        },
-
-        "stg": {
-            "name": "Send To Grade",
-            "color": "FFFFFF"
-        },
-
-        "supap": {
-            "name": "supervisor approved",
-            "color": "FFFD1C"
-        },
-
-        "too": {
-            "name": "To_Online",
-            "color": "FFFFFF"
-        },
-
-        "toooo": {
-            "name": "To_Online",
-            "color": "FDAFFB"
-        },
-
-        "vwd": {
-            "name": "Viewed",
-            "color": "929292"
-        },
-
-        "wtg": {
-            "name": "Waiting to Start",
-            "color": "D5D5D5"
-        },
-        "rfgi": {
-            "name": "Ready For Grade Insert",
-            "color": "FFFFFF"
-        }
-    }
+    
 
     def init_app(self):
 
@@ -502,15 +299,16 @@ class ShotlistExport(sgtk.platform.Application):
 
         self.THUMBNAIL_DIR = tempfile.mkdtemp(prefix="shotlist_export_")
 
-        self.TEMPLATE_FILE = os.path.join(
-            self.BASE_DIR,
-            "resources",
-            "SHOTLIST_TEMPLATE.xlsx",
-        )
+        self.RESOURCE_DIR = os.path.join(self.BASE_DIR, "resources/")
 
         if self.DEBUG_MODE:
             self.log_info(f"Entity type: {entity_type}")
             self.log_info(f"Entity IDs: {entity_ids}")
+
+        # Resources needed
+        self.TEMPLATE_FILE = os.path.join(self.RESOURCE_DIR,"SHOTLIST_TEMPLATE.xlsx")
+        STATUS_INFO = json.load(open(os.path.join(self.RESOURCE_DIR, "status_info.json"), "r"))
+
 
         # ----------------------------
         # MAIN EXPORT
@@ -582,6 +380,31 @@ class ShotlistExport(sgtk.platform.Application):
             user_name = user["name"]
             ws["C2"] = user_name
 
+
+            # Fetch data from linked entities
+
+            # Retrieve all versions for each shot in query
+            shot_versions = sg.find(
+                "Version",
+                [["entity", "in", shots]],
+                ["code", "cached_display_name", "entity", "created_at"],
+                order=[
+                    {"field_name": "created_at", "direction": "asc"}
+                ]
+            )
+
+            # save the newest entries of each shot in new list
+            latest_versions = {}
+            for version in shot_versions:
+                # since the list is sorted in ascending order, the newer records naturally overwrites older entries of the same shot
+                latest_versions[version["entity"]["id"]] = version
+
+            if self.DEBUG_MODE:
+                self.log_info("::: LATEST VERSIONS :::")
+                for latest_version in latest_versions.values():
+                    self.log_info(latest_version.get("cached_display_name"))
+
+
             # Retrieve task-info
             tasks = sg.find(
                 "Task",
@@ -600,6 +423,7 @@ class ShotlistExport(sgtk.platform.Application):
             if self.DEBUG_MODE:
                 self.log_time("Retrieved tasks for shots", start_time)
 
+        
             task_durations = {} 
 
             for task in tasks:
@@ -635,11 +459,20 @@ class ShotlistExport(sgtk.platform.Application):
             for s in shots:
                 code = s.get("code")
                 status_code = s.get("sg_status_list")
-                latest_version = s.get("sg_latest_version")
                 tc_in = s.get("sg_tc_in")
                 description = s.get("description")
                 shot_id = s["id"]
                 duration_minutes = task_durations[shot_id]
+
+                # object
+                latest_version = latest_versions.get(shot_id)
+                # string name
+                latest_version_name = None
+
+                if latest_version:
+                    latest_version_name = latest_version["cached_display_name"]
+                else:
+                    latest_version_name = ""
 
                 # Formatting data
                 tc_in_formatted = self.millisec_to_tc(tc_in)
@@ -650,7 +483,7 @@ class ShotlistExport(sgtk.platform.Application):
                 
                 # Get status name and color hexadecimal
 
-                status_info = self.STATUS_INFO.get(status_code)
+                status_info = STATUS_INFO.get(status_code)
 
                 status_name = ""
                 status_color = ""
@@ -665,7 +498,7 @@ class ShotlistExport(sgtk.platform.Application):
             
                 ws.cell(row=row, column=self.SHOTCODE_COLUMN,       value=code)
                 ws.cell(row=row, column=self.TIMECODE_COLUMN,       value=tc_in_formatted)
-                ws.cell(row=row, column=self.VERSION_COLUMN,        value=latest_version)
+                ws.cell(row=row, column=self.VERSION_COLUMN,        value=latest_version_name)
                 ws.cell(row=row, column=self.DESCRIPTION_COLUMN,    value=description)
                 ws.cell(row=row, column=self.HOURS_COLUMN,          value=duration_hours)   
              

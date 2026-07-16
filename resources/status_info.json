@@ -1,0 +1,205 @@
+{
+        "act": {
+            "name": "Active",
+            "color": "19761B"
+        },
+
+        "apr": {
+            "name": "Approved",
+            "color": "B3B3B3"
+        },
+
+        "acr": {
+            "name": "Awaiting Client Review",
+            "color": "005C83"
+        },
+
+        "ca": {
+            "name": "Client approved",
+            "color": "A1EC9A"
+        },
+
+        "cap": {
+            "name": "Client Approved",
+            "color": "19761B"
+        },
+
+        "clsd": {
+            "name": "Closed",
+            "color": "969696"
+        },
+
+        "cmpt": {
+            "name": "Complete",
+            "color": "929292"
+        },
+
+        "cfrm": {
+            "name": "Confirmed",
+            "color": "A1EC9A"
+        },
+
+        "dlvr": {
+            "name": "Delivered",
+            "color": "D5D5D5"
+        },
+
+        "dis": {
+            "name": "Disabled",
+            "color": "CC0001"
+        },
+
+        "fdbk": {
+            "name": "Feedback to adress",
+            "color": "B700BC"
+        },
+
+        "fta": {
+            "name": "Feedback to adress",
+            "color": "DEB6FF"
+        },
+
+        "fin": {
+            "name": "Final",
+            "color": "969696"
+        },
+
+        "ing": {
+            "name": "In grade",
+            "color": "006EFC"
+        },
+
+        "ion": {
+            "name": "In_Online",
+            "color": "0295D8"
+        },
+
+        "ip": {
+            "name": "In Progress",
+            "color": "CAE1CA"
+        },
+
+        "inp": {
+            "name": "In progress",
+            "color": "FFFFFF"
+        },
+
+        "ia": {
+            "name": "Internally approved",
+            "color": "98F2FB"
+        },
+
+        "iap": {
+            "name": "Internally approved",
+            "color": "CAEDC5"
+        },
+
+        "na": {
+            "name": "N/A",
+            "color": "FFFFFF"
+        },
+
+        "omt": {
+            "name": "Omit",
+            "color": "E17F81"
+        },
+
+        "omit": {
+            "name": "Omit",
+            "color": "FE9798"
+        },
+
+        "hld": {
+            "name": "On Hold",
+            "color": "969696"
+        },
+
+        "onhold": {
+            "name": "On hold",
+            "color": "FECD8A"
+        },
+
+        "opn": {
+            "name": "Open",
+            "color": "D5D5D5"
+        },
+
+        "pndng": {
+            "name": "Pending",
+            "color": "969696"
+        },
+
+        "rev": {
+            "name": "Pending Review",
+            "color": "95E3A7"
+        },
+
+        "pr": {
+            "name": "Pending Review",
+            "color": "EFFBCB"
+        },
+
+        "prw": {
+            "name": "Pending review",
+            "color": "004A00"
+        },
+
+        "pnrw": {
+            "name": "Pending Review",
+            "color": "BCDAFC"
+        },
+
+        "qc": {
+            "name": "QC Ready For Delivery",
+            "color": "016E01"
+        },
+
+        "rts": {
+            "name": "Ready to start",
+            "color": "FBFDCC"
+        },
+
+        "recd": {
+            "name": "Received",
+            "color": "FFFFFF"
+        },
+
+        "res": {
+            "name": "Resolved",
+            "color": "969696"
+        },
+
+        "stg": {
+            "name": "Send To Grade",
+            "color": "FFFFFF"
+        },
+
+        "supap": {
+            "name": "supervisor approved",
+            "color": "FFFD1C"
+        },
+
+        "too": {
+            "name": "To_Online",
+            "color": "FFFFFF"
+        },
+
+        "toooo": {
+            "name": "To_Online",
+            "color": "FDAFFB"
+        },
+
+        "vwd": {
+            "name": "Viewed",
+            "color": "929292"
+        },
+
+        "wtg": {
+            "name": "Waiting to Start",
+            "color": "D5D5D5"
+        },
+        "rfgi": {
+            "name": "Ready For Grade Insert",
+            "color": "FFFFFF"
+        }
+    }
