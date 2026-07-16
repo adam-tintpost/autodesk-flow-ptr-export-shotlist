@@ -181,9 +181,10 @@ class ShotlistExport(sgtk.platform.Application):
     SHOTCODE_COLUMN = 1
     THUMBNAIL_COLUMN = 2
     TIMECODE_COLUMN = 3
-    DESCRIPTION_COLUMN = 4
-    HOURS_COLUMN = 5
-    STATUS_COLUMN = 6
+    VERSION_COLUMN = 4
+    DESCRIPTION_COLUMN = 5
+    HOURS_COLUMN = 6
+    STATUS_COLUMN = 7
 
     TEMPLATE_ROW = 4
 
@@ -393,6 +394,10 @@ class ShotlistExport(sgtk.platform.Application):
         "wtg": {
             "name": "Waiting to Start",
             "color": "D5D5D5"
+        },
+        "rfgi": {
+            "name": "Ready For Grade Insert",
+            "color": "FFFFFF"
         }
     }
 
@@ -528,6 +533,7 @@ class ShotlistExport(sgtk.platform.Application):
                 "sg_tc_in",
                 "description",
                 "sg_sequence",
+                "sg_latest_version",
                 "smart_duration_summary_display"
             ],
             order=[{"field_name": "code", "direction": "asc"}],
@@ -629,6 +635,7 @@ class ShotlistExport(sgtk.platform.Application):
             for s in shots:
                 code = s.get("code")
                 status_code = s.get("sg_status_list")
+                latest_version = s.get("sg_latest_version")
                 tc_in = s.get("sg_tc_in")
                 description = s.get("description")
                 shot_id = s["id"]
@@ -658,6 +665,7 @@ class ShotlistExport(sgtk.platform.Application):
             
                 ws.cell(row=row, column=self.SHOTCODE_COLUMN, value=code)
                 ws.cell(row=row, column=self.TIMECODE_COLUMN, value=tc_in_formatted)
+                ws.cell(row=row, column=self,VERSION_COLUMN, value=latest_version)
                 ws.cell(row=row, column=self.DESCRIPTION_COLUMN, value=description)
                 ws.cell(row=row, column=self.HOURS_COLUMN, value=duration_hours)   
              
