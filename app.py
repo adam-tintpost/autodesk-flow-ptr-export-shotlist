@@ -663,11 +663,11 @@ class ShotlistExport(sgtk.platform.Application):
                     status_color = status_info["color"]
 
             
-                ws.cell(row=row, column=self.SHOTCODE_COLUMN, value=code)
-                ws.cell(row=row, column=self.TIMECODE_COLUMN, value=tc_in_formatted)
-                ws.cell(row=row, column=self,VERSION_COLUMN, value=latest_version)
-                ws.cell(row=row, column=self.DESCRIPTION_COLUMN, value=description)
-                ws.cell(row=row, column=self.HOURS_COLUMN, value=duration_hours)   
+                ws.cell(row=row, column=self.SHOTCODE_COLUMN,       value=code)
+                ws.cell(row=row, column=self.TIMECODE_COLUMN,       value=tc_in_formatted)
+                ws.cell(row=row, column=self.VERSION_COLUMN,        value=latest_version)
+                ws.cell(row=row, column=self.DESCRIPTION_COLUMN,    value=description)
+                ws.cell(row=row, column=self.HOURS_COLUMN,          value=duration_hours)   
              
                 # Set row style to match first
                 self.copy_row_format(ws, self.TEMPLATE_ROW, row)
